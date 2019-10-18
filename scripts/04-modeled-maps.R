@@ -7,10 +7,17 @@ library(corrplot)
 
 epg.metadata <- read.csv(here::here('data', 'epg_with_metadata_norm.csv'))
 
+# determine species for each sample
+epg.metadata$Species <- substr(epg.metadata$ID, 4, 7)
+
+# bring in RAI at each data point (for those that fall within grid)
+rai <- read.csv(here::here('data', 'LOD_RAI_and_EPG.csv'))
+epg.metadata <- left_join(epg.metadata, rai)
+
 # test all environmental covariates
 fit <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
                  term100 + term250 + panlg100 + panlg250, 
-               data = epg.metadata, # change for each species
+               data = epg.metadata, # for all species together
                method = "h", 
                crit="aic", # use AIC as criterion
                level=1) # only main effects are to be used, no interactions
@@ -27,8 +34,95 @@ summary(fit@objects[[1]])
 model.output <- capture.output(summary(fit@objects[[1]]))
 cat("lod-model", model.output, file= here::here('results', 'lod-model.txt'), sep="\n", append=F)
 
+# now do one species at a time
 
-# spatially map model results
+# aeme
+fit.aeme <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                 term100 + term250 + panlg100 + panlg250, 
+               data = subset(epg.metadata, Species == "AEME"), 
+               method = "h", 
+               crit="aic", # use AIC as criterion
+               level=1) # only main effects are to be used, no interactions
+model.output.aeme <- capture.output(summary(fit.aeme@objects[[1]]))
+cat("Impala model", model.output.aeme, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=F)
+summary(fit.aeme@objects[[1]])
+# termite mound density is the only predictor of impala parasite load (weak; slightly lower in areas with termite mounds)
+
+# koel
+fit.koel <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "KOEL"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.koel <- capture.output(summary(fit.koel@objects[[1]]))
+cat("Waterbuck model", model.output.koel, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.koel@objects[[1]])
+# pan density (w/in 250 meters) is only predictor for waterbuck; parasite load is higher with more pans (very very weak effect)
+
+# ouou
+fit.ouou <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "OUOU"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.ouou <- capture.output(summary(fit.ouou@objects[[1]]))
+cat("Oribi model", model.output.ouou, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.ouou@objects[[1]])
+# no important spatial predictors of oribi parasite load
+
+# phaf
+fit.phaf <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "PHAF"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.phaf <- capture.output(summary(fit.phaf@objects[[1]]))
+cat("Warthog model", model.output.phaf, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.phaf@objects[[1]])
+# warthog parasite load is higher further from Lake Urema
+
+# rear
+fit.rear <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "REAR"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.rear <- capture.output(summary(fit.rear@objects[[1]]))
+cat("Reedbuck model", model.output.rear, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.rear@objects[[1]])
+# all of the pan layers are associated with reedbuck but now that I think about it we really should only use one of these in each model!! 
+
+# tran
+fit.tran <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "TRAN"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.tran <- capture.output(summary(fit.tran@objects[[1]]))
+cat("Nyala model", model.output.tran, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.tran@objects[[1]])
+# lots of covariates pop up here, but weak effects; nyala parasite load is higher close to the lake, close to rivers, in areas with less tree cover, and near pans
+
+# trsc
+fit.trsc <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
+                      term100 + term250 + panlg100 + panlg250, 
+                    data = subset(epg.metadata, Species == "TRSC"), 
+                    method = "h", 
+                    crit="aic", # use AIC as criterion
+                    level=1) # only main effects are to be used, no interactions
+model.output.trsc <- capture.output(summary(fit.trsc@objects[[1]]))
+cat("Bushbuck model", model.output.trsc, file= here::here('results', 'lod-model-by-species.txt'), sep="\n", append=T)
+summary(fit.trsc@objects[[1]])
+# only distance to river - bushbuck parasite load is higher close to rivers
+
+
+
+# spatially map model results (only did this for the all-species-combined model)
 
 # import raster files
 fire.norm <- raster(here::here("data", "spatial", "normalized", "fire.norm.tif"))
@@ -68,7 +162,7 @@ all_locs <- readOGR(here::here('data', 'epg_with_metadata_norm.shp'))  %>%
 
 points(all_locs, add =T)
 # hmm, I'm not sure why some of these samples fall outside of the raster extent!! it doesn't make sense, given how I did things, but ah well
-# can fix this but it will take a few days to regenerate the rasters for the study area
+# can fix this but it will take a few days to regenerate the rasters for the study area, not a priority
 
 # save
 pdf(here::here('figures', 'lod-model.pdf'))
@@ -78,10 +172,6 @@ dev.off()
 
 # what if we use animal activity as a predictor of EPG, rather than consider it an outcome?
 # of course, some of the points fall outside of the camera grid; I did not yet account for that
-
-# bring in overall RAI
-rai <- read.csv(here::here('data', 'LOD_RAI_and_EPG.csv'))
-epg.metadata <- left_join(epg.metadata, rai)
 
 # throw in animal activity also
 fit2 <- glmulti(EPG ~ tree + fire + river + urema + pan100 + pan250 + 
