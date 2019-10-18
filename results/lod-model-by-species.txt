@@ -1,0 +1,177 @@
+Impala model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-273.30  -165.36   -33.24    76.17  1461.24  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   219.71      31.86   6.896 1.45e-09 ***
+term100       -60.20      33.22  -1.812    0.074 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 77147.43)
+
+    Null deviance: 6039333  on 76  degrees of freedom
+Residual deviance: 5786057  on 75  degrees of freedom
+  (2 observations deleted due to missingness)
+AIC: 1089
+
+Number of Fisher Scoring iterations: 2
+
+Waterbuck model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-382.0  -280.0  -168.4   106.8  2031.0  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   335.19      48.70   6.883 9.85e-10 ***
+pan250         23.46      24.96   0.940     0.35    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 191626.8)
+
+    Null deviance: 16265953  on 85  degrees of freedom
+Residual deviance: 16096653  on 84  degrees of freedom
+  (2 observations deleted due to missingness)
+AIC: 1294.1
+
+Number of Fisher Scoring iterations: 2
+
+Oribi model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1000.2   -721.3   -514.9    207.3  11172.0  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   1000.2      169.8   5.892  7.9e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 2421009)
+
+    Null deviance: 200943709  on 83  degrees of freedom
+Residual deviance: 200943709  on 83  degrees of freedom
+AIC: 1476.2
+
+Number of Fisher Scoring iterations: 2
+
+Warthog model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-789.6  -369.5  -162.0   124.2  2268.7  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   702.23      88.67   7.919 9.42e-12 ***
+urema         255.27     118.59   2.153   0.0343 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 320948.2)
+
+    Null deviance: 28125802  on 84  degrees of freedom
+Residual deviance: 26638700  on 83  degrees of freedom
+  (1 observation deleted due to missingness)
+AIC: 1322.9
+
+Number of Fisher Scoring iterations: 2
+
+Reedbuck model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-847.3  -252.8  -161.2   159.4  2914.9  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   297.29      67.66   4.394 3.35e-05 ***
+pan100       -468.83     231.76  -2.023  0.04638 *  
+pan250        808.84     250.81   3.225  0.00182 ** 
+panlg100      290.66     181.68   1.600  0.11352    
+panlg250     -497.50     183.09  -2.717  0.00805 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 327776.3)
+
+    Null deviance: 32083747  on 85  degrees of freedom
+Residual deviance: 26549879  on 81  degrees of freedom
+AIC: 1343.1
+
+Number of Fisher Scoring iterations: 2
+
+Nyala model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-26.924  -10.982   -2.216   14.248   31.831  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   32.817      7.119   4.610 0.000965 ***
+tree          -9.473      7.531  -1.258 0.237018    
+river        -24.044     12.451  -1.931 0.082283 .  
+urema        -43.556     14.562  -2.991 0.013550 *  
+pan100        71.942     37.018   1.943 0.080625 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 362.062)
+
+    Null deviance: 8455.3  on 14  degrees of freedom
+Residual deviance: 3620.6  on 10  degrees of freedom
+AIC: 136.86
+
+Number of Fisher Scoring iterations: 2
+
+Bushbuck model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+ -96.75   -57.57   -17.47    -9.20  1321.59  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)    37.26      15.70   2.373   0.0191 *
+river         -48.91      25.88  -1.890   0.0609 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 33721.45)
+
+    Null deviance: 4672811  on 136  degrees of freedom
+Residual deviance: 4552396  on 135  degrees of freedom
+  (1 observation deleted due to missingness)
+AIC: 1821.1
+
+Number of Fisher Scoring iterations: 2
+
