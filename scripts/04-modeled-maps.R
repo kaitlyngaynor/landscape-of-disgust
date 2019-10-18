@@ -2,6 +2,7 @@ library(here)
 library(dplyr)
 library(glmulti)
 library(raster)
+library(rgdal)
 library(corrplot)
 
 epg.metadata <- read.csv(here::here('data', 'epg_with_metadata_norm.csv'))
@@ -59,9 +60,20 @@ predict.best <- raster::predict(raster.stack.norm, fit@objects[[1]], type = "res
 # plot output
 plot(predict.best)
 
+# unfortunately, it ends up looking like a tree cover map
+
+# bring in the sample data
+all_locs <- readOGR(here::here('data', 'epg_with_metadata_norm.shp'))  %>% 
+  spTransform(CRS("+proj=utm +south +zone=36 +ellps=WGS84"))
+
+points(all_locs, add =T)
+# hmm, I'm not sure why some of these samples fall outside of the raster extent!! it doesn't make sense, given how I did things, but ah well
+# can fix this but it will take a few days to regenerate the rasters for the study area
+
 # save
 pdf(here::here('figures', 'lod-model.pdf'))
 plot(predict.best)
+points(all_locs, add =T)
 dev.off()
 
 # what if we use animal activity as a predictor of EPG, rather than consider it an outcome?
