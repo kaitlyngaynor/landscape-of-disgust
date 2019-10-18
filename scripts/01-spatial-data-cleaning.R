@@ -30,11 +30,6 @@ urema.lyr <- readOGR("~/Dropbox/projects/GORONGOSA2/Camera Trap Grid/R/GIS/Spati
 ## rivers
 rivers.lyr <- readOGR("~/Dropbox/projects/GORONGOSA2/Camera Trap Grid/R/GIS/Spatial data/GIS layers", "gnp_main_rivers_latlong") %>% spTransform(CRS("+proj=utm +south +zone=36 +ellps=WGS84"))
 
-<<<<<<< HEAD
-## note that the pan layers were manually digitized for the camera trap grid area, but not outside of it!!
-
-=======
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 ## Conservative Pans (no channels and floodplain)
 panscon.lyr <- readOGR("~/Dropbox/projects/GORONGOSA2/Camera Trap Grid/R/GIS/Spatial data/Pan_conservative", "PanOutline_130429_2") %>% spTransform(CRS("+proj=utm +south +zone=36 +ellps=WGS84"))
 
@@ -203,10 +198,6 @@ pans.offflood.250m.norm <- normImage(pans.offflood.250m, norm = TRUE)
 panslarge.offflood.100m.norm <- normImage(panslarge.offflood.100m, norm = TRUE)
 panslarge.offflood.250m.norm <- normImage(panslarge.offflood.250m, norm = TRUE)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 # export
 writeRaster(fire.norm, 'landscape-of-disgust/data/spatial/normalized/fire.norm.tif', format = "GTiff", overwrite = TRUE, options = c("INTERLEAVE=BAND", "COMPRESS=LZW"))
 writeRaster(tree.hansen.norm, 'landscape-of-disgust/data/spatial/normalized/tree.hansen.norm.tif', format = "GTiff", overwrite = TRUE, options = c("INTERLEAVE=BAND", "COMPRESS=LZW"))
