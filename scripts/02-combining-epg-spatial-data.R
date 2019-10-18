@@ -102,14 +102,7 @@ all_locs <- all_locs[, c('Longitude', 'Latitude')] %>%
 # plot them
 plot(all_locs)
 
-<<<<<<< HEAD
-# extract raster values at fecal sample locations
-
 # first bring in rasters
-=======
-
-## Extract raster values at fecal sample locations
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 fire.norm <- raster(here::here("data", "spatial", "normalized", "fire.norm.tif"))
 tree.hansen.norm <- raster(here::here("data", "spatial", "normalized", "tree.hansen.norm.tif"))
 rivers.dist.norm <- raster(here::here("data", "spatial", "normalized", "rivers.dist.norm.tif"))
@@ -122,21 +115,13 @@ pans.offflood.250m.norm <- raster(here::here("data", "spatial", "normalized", "p
 panslarge.offflood.100m.norm <- raster(here::here("data", "spatial", "normalized", "panslarge.offflood.100m.norm.tif"))
 panslarge.offflood.250m.norm <- raster(here::here("data", "spatial", "normalized", "panslarge.offflood.250m.norm.tif"))
 
-<<<<<<< HEAD
-=======
-# stack raster
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 # create raster stack at 2 meter x 2 meter resolution, masked to camera grid, and normalized (each layer with mean of 0 and SD of 1)
 raster.stack.norm <- raster::stack(fire.norm, tree.hansen.norm, rivers.dist.norm, 
                                    road.dist.norm, urema.dist.norm, termites.100m.norm, 
                                    termites.250m.norm, pans.offflood.100m.norm, pans.offflood.250m.norm,
                                    panslarge.offflood.100m.norm, panslarge.offflood.250m.norm)
 
-<<<<<<< HEAD
 # change names for ease later on (or ESRI driver will do it for you)
-=======
-# change names for ease later on
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 names(raster.stack.norm) <- c("fire", "tree", "river", "road", "urema", "term100", "term250", 
                               "pan100", "pan250", "panlg100", "panlg250")
 
