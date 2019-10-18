@@ -1,0 +1,28 @@
+lod-model
+
+Call:
+fitfunc(formula = as.formula(x), data = data)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+ -654.4   -315.5   -183.7     36.5  11829.3  
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   263.50      63.27   4.165 3.57e-05 ***
+tree         -190.96      53.32  -3.581  0.00037 ***
+fire         -130.14      80.13  -1.624  0.10488    
+urema         166.09      68.81   2.414  0.01609 *  
+term250       -40.76      33.76  -1.207  0.22779    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for gaussian family taken to be 550392.7)
+
+    Null deviance: 348538548  on 608  degrees of freedom
+Residual deviance: 332437207  on 604  degrees of freedom
+  (17 observations deleted due to missingness)
+AIC: 9785.2
+
+Number of Fisher Scoring iterations: 2
+
