@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ### map fecal egg counts to camera locations and compare with camera records
-=======
-### map fecal egg counts to camera locations
->>>>>>> 385a07d26e47d57d97feea67a6fbdd25484e8943
 
 library(here)
 library(rgdal)
@@ -30,10 +26,10 @@ points(all_locs, col = "red")
 text(cam_labs[,1], cam_labs[,2], labels=as.character(cam_labs[,3]))
 
 # let's pare things down to the samples that within hexs
-all_locs <- all_locs[cams,]  ## WHY ISN'T THIS WORKING? IT USED TO BE
+all_locs <- all_locs[cams,]
 
-# extract third column (ID code with hex row and column), merge with camera metadata
-all_locs <- cbind(all_locs, over(all_locs, cams)[,6])
+# extract column (ID code with hex row and column), merge with ID and EPG
+all_locs <- cbind(all_locs[,c(1,2)], over(all_locs, cams)[,6])
 names(all_locs) <- c("ID", "EPG", "StudySite")
 
 # let's see the distribution by camera and remove those with less than 3 samples
@@ -94,6 +90,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=count))+
   theme_void()+
   theme(
     legend.position=c(0.85,0.15))
+ggsave(here::here('figures', 'hex-sample-count.pdf'))
 
 # plot medians
 ggplot(cams.df, aes(long,lat,group=group,fill=median_EPG))+ 
@@ -105,6 +102,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=median_EPG))+
   theme(
     legend.position=c(0.85,0.15)) +
   ggtitle('Parasite load')
+ggsave(here::here('figures', 'hex-median-epg.pdf'))
 
 # plot mean
 ggplot(cams.df, aes(long,lat,group=group,fill=mean_EPG))+ 
@@ -116,6 +114,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=mean_EPG))+
   theme(
     legend.position=c(0.85,0.15)) +
   ggtitle('Parasite load')
+ggsave(here::here('figures', 'hex-mean-epg.pdf'))
 
 ## Activity of all major species (those included here: AEME, KOEL, OUOU, PHAF, REAR, TRAN, TRSC)
 ggplot(cams.df, aes(long,lat,group=group,fill=MajorSpecies_all_years))+ 
@@ -127,6 +126,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=MajorSpecies_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Animal activity')
+ggsave(here::here('figures', 'hex-rai-allspecies.pdf'))
 
 # relationship between activity and parasites
 ggplot(cams.df, aes(MajorSpecies_all_years, median_EPG)) +
@@ -134,11 +134,14 @@ ggplot(cams.df, aes(MajorSpecies_all_years, median_EPG)) +
   geom_smooth(method='lm') +
   ggtitle('All species') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-allspecies-vs-epg-median.pdf'))
+
 ggplot(cams.df, aes(MajorSpecies_all_years, mean_EPG)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('All species') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-allspecies-vs-epg-mean.pdf'))
 
 ### Species by species
 
@@ -153,6 +156,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=AEME_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Impala parasites')
+ggsave(here::here('figures', 'hex-aeme-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Impala_all_years))+ 
   geom_polygon()+
@@ -163,12 +168,15 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Impala_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Impala activity')
+ggsave(here::here('figures', 'hex-aeme-rai.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Impala_all_years, AEME_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Impala') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-aeme.pdf'))
 
 ### KOEL
 # eggs
@@ -181,6 +189,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=KOEL_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Waterbuck parasites')
+ggsave(here::here('figures', 'hex-koel-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Waterbuck_all_years))+ 
   geom_polygon()+
@@ -191,12 +201,15 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Waterbuck_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Waterbuck activity')
+ggsave(here::here('figures', 'hex-koel-rai.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Waterbuck_all_years, KOEL_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Waterbuck') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-koel.pdf'))
 
 ### OUOU
 # eggs
@@ -209,6 +222,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=OUOU_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Oribi parasites')
+ggsave(here::here('figures', 'hex-ouou-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Oribi_all_years))+ 
   geom_polygon()+
@@ -219,12 +234,15 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Oribi_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Oribi activity')
+ggsave(here::here('figures', 'hex-ouou-rai.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Oribi_all_years, OUOU_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Oribi') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-ouou.pdf'))
 
 ### PHAF
 # eggs
@@ -237,6 +255,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=PHAF_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Warthog parasites')
+ggsave(here::here('figures', 'hex-phaf-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Warthog_all_years))+ 
   geom_polygon()+
@@ -247,12 +267,15 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Warthog_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Warthog activity')
+ggsave(here::here('figures', 'hex-phaf-rai.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Warthog_all_years, PHAF_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Warthog') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-phaf.pdf'))
 
 ### REAR
 # eggs
@@ -265,6 +288,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=REAR_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Reedbuck parasites')
+ggsave(here::here('figures', 'hex-rear-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Reedbuck_all_years))+ 
   geom_polygon()+
@@ -275,12 +300,15 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Reedbuck_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Reedbuck Activity')
+ggsave(here::here('figures', 'hex-rear-rai.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Reedbuck_all_years, REAR_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Reedbuck') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-rear.pdf'))
 
 ### TRAN
 # eggs
@@ -293,6 +321,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=TRAN_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Nyala parasites')
+ggsave(here::here('figures', 'hex-tran-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Nyala_all_years))+ 
   geom_polygon()+
@@ -303,6 +333,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Nyala_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Nyala activity')
+ggsave(here::here('figures', 'rai-vs-epg-med-tran.pdf'))
 
 ### TRSC
 # eggs
@@ -315,6 +346,8 @@ ggplot(cams.df, aes(long,lat,group=group,fill=TRSC_med))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Bushbuck parasites')
+ggsave(here::here('figures', 'hex-trsc-epg-median.pdf'))
+
 # activity
 ggplot(cams.df, aes(long,lat,group=group,fill=Bushbuck_all_years))+ 
   geom_polygon()+
@@ -325,9 +358,12 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Bushbuck_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Bushbuck activity')
+ggsave(here::here('figures', 'hex-koel-trsc.pdf'))
+
 # relationship between activity and parasites
 ggplot(cams.df, aes(Bushbuck_all_years, TRSC_med)) +
   geom_point() +
   geom_smooth(method='lm') +
   ggtitle('Bushbuck') +
   xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-vs-epg-med-trsc.pdf'))
