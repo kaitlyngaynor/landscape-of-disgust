@@ -62,7 +62,7 @@ names(cam_epg_species_mean) <- c("StudySite", "AEME_med", "KOEL_med", "OUOU_med"
 cam_epg <- join_all(list(cam_epg, cam_epg_species_med, cam_epg_species_mean), by = "StudySite", type = "left")
 
 # now bring in camera trap data
-rai <- read.csv(here::here("data", "RAI_LOD_by_year_wide_091919.csv"))
+rai <- read.csv(here::here("data", "RAI_LOD_by_year_wide.csv"))
 
 #  merge individual data points with RAI for the camera
 all_locs_rai <- left_join(as.data.frame(all_locs), rai)
