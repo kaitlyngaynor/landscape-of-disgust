@@ -333,6 +333,14 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Nyala_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Nyala activity')
+ggsave(here::here('figures', 'hex-tran-rai.pdf'))
+
+# relationship between activity and parasites
+ggplot(cams.df, aes(Nyala_all_years, TRAN_med)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle('Nyala') +
+  xlab('Relative Activity Index')
 ggsave(here::here('figures', 'rai-vs-epg-med-tran.pdf'))
 
 ### TRSC
@@ -358,7 +366,7 @@ ggplot(cams.df, aes(long,lat,group=group,fill=Bushbuck_all_years))+
   theme(
     legend.position=c(0.85,0.15))+
   ggtitle('Bushbuck activity')
-ggsave(here::here('figures', 'hex-koel-trsc.pdf'))
+ggsave(here::here('figures', 'hex-trsc-rai.pdf'))
 
 # relationship between activity and parasites
 ggplot(cams.df, aes(Bushbuck_all_years, TRSC_med)) +
