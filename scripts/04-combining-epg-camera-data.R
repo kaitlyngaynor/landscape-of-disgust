@@ -45,11 +45,18 @@ plot(cams)
 points(all_locs, col = "red")
 text(cam_labs[,1], cam_labs[,2], labels=as.character(cam_labs[,3]))
 
-# calculate mean, median EPG and sample count for each camera hex
-cam_epg <- as.data.frame(all_locs) %>% group_by(StudySite) %>% dplyr::summarise(mean_EPG = mean(EPG), median_EPG = median(EPG), count = n()) %>% as.data.frame()
-
 # determine species for each sample
 all_locs$Species <- substr(all_locs$ID, 4, 7)
+
+# calculate overall mean, median EPG and sample count for each camera hex
+cam_epg <- as.data.frame(all_locs) %>% group_by(StudySite) %>% dplyr::summarise(mean_EPG = mean(EPG), median_EPG = median(EPG), count = n()) %>% as.data.frame()
+
+# calculate mean, median EPG and sample count for floodplain species only, for each camera hex
+cam_epg_flood <- as.data.frame(all_locs) %>% 
+  filter(Species == "KOEL" | Species == "AEME" | Species == "REAR" | Species == "OUOU" | Species == "PHAF") %>% 
+  group_by(StudySite) %>% 
+  dplyr::summarise(mean_EPG_flood = mean(EPG), median_EPG_flood = median(EPG), count_flood = n()) %>% 
+  as.data.frame()
 
 # calculate mean, median EPG and sample count for each species in each camera hex
 cam_epg_species <- as.data.frame(all_locs) %>% group_by(StudySite, Species) %>% dplyr::summarise(mean_EPG = mean(EPG), median_EPG = median(EPG), count = n()) %>% as.data.frame()
@@ -59,7 +66,7 @@ cam_epg_species_mean <- spread(cam_epg_species[, c(1,2,3)], key = Species, value
 names(cam_epg_species_med) <- c("StudySite", "AEME_mean", "KOEL_mean", "OUOU_mean", "PHAF_mean", "REAR_mean", "TRAN_mean", "TRSC_mean", "TRST_mean")
 names(cam_epg_species_mean) <- c("StudySite", "AEME_med", "KOEL_med", "OUOU_med", "PHAF_med", "REAR_med", "TRAN_med", "TRSC_med", "TRST_med")
 
-cam_epg <- join_all(list(cam_epg, cam_epg_species_med, cam_epg_species_mean), by = "StudySite", type = "left")
+cam_epg <- join_all(list(cam_epg, cam_epg_flood, cam_epg_species_med, cam_epg_species_mean), by = "StudySite", type = "left")
 
 # now bring in camera trap data
 rai <- read.csv(here::here("data", "RAI_LOD_by_year_wide.csv"))
@@ -116,6 +123,31 @@ ggplot(cams.df, aes(long,lat,group=group,fill=mean_EPG))+
   ggtitle('Parasite load')
 ggsave(here::here('figures', 'hex-mean-epg.pdf'))
 
+
+# plot medians - floodplain species only
+ggplot(cams.df, aes(long,lat,group=group,fill=median_EPG_flood))+ 
+  geom_polygon()+
+  geom_path(color="white")+
+  coord_equal()+
+  scale_fill_viridis(option='magma', name='Median EPG')+
+  theme_void()+
+  theme(
+    legend.position=c(0.85,0.15)) +
+  ggtitle('Parasite load (floodplain species)')
+ggsave(here::here('figures', 'hex-median-epg-flood.pdf'))
+
+# plot mean - floodplain species only
+ggplot(cams.df, aes(long,lat,group=group,fill=mean_EPG_flood)) + 
+  geom_polygon()+
+  geom_path(color="white")+
+  coord_equal()+
+  scale_fill_viridis(option='magma', name='Mean EPG')+
+  theme_void()+
+  theme(
+    legend.position=c(0.85,0.15)) +
+  ggtitle('Parasite load (floodplain species)')
+ggsave(here::here('figures', 'hex-mean-epg-flood.pdf'))
+
 ## Activity of all major species (those included here: AEME, KOEL, OUOU, PHAF, REAR, TRAN, TRSC)
 ggplot(cams.df, aes(long,lat,group=group,fill=MajorSpecies_all_years))+ 
   geom_polygon()+
@@ -128,7 +160,20 @@ ggplot(cams.df, aes(long,lat,group=group,fill=MajorSpecies_all_years))+
   ggtitle('Animal activity')
 ggsave(here::here('figures', 'hex-rai-allspecies.pdf'))
 
-# relationship between activity and parasites
+
+## Activity of all floodplain species (those included here: AEME, KOEL, OUOU, PHAF, REAR)
+ggplot(cams.df, aes(long,lat,group=group,fill=FloodSpecies_all_years))+ 
+  geom_polygon()+
+  geom_path(color="white")+
+  coord_equal()+
+  scale_fill_viridis(option='magma', name='RAI')+
+  theme_void()+
+  theme(
+    legend.position=c(0.85,0.15))+
+  ggtitle('Animal activity (floodplain species)')
+ggsave(here::here('figures', 'hex-rai-floodspecies.pdf'))
+
+# relationship between activity and parasites for "Major Species"
 ggplot(cams.df, aes(MajorSpecies_all_years, median_EPG)) +
   geom_point() +
   geom_smooth(method='lm') +
@@ -142,6 +187,21 @@ ggplot(cams.df, aes(MajorSpecies_all_years, mean_EPG)) +
   ggtitle('All species') +
   xlab('Relative Activity Index')
 ggsave(here::here('figures', 'rai-allspecies-vs-epg-mean.pdf'))
+
+# relationship between activity and parasites for "Floodplain Species"
+ggplot(cams.df, aes(FloodSpecies_all_years, median_EPG_flood)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle('Floodplain species') +
+  xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-floodspecies-vs-epg-median.pdf'))
+
+ggplot(cams.df, aes(FloodSpecies_all_years, mean_EPG_flood)) +
+  geom_point() +
+  geom_smooth(method='lm') +
+  ggtitle('Floodplain species') +
+  xlab('Relative Activity Index')
+ggsave(here::here('figures', 'rai-floodspecies-vs-epg-mean.pdf'))
 
 ### Species by species
 

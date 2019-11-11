@@ -21,16 +21,16 @@ end.date.list <- list()
 end.date.asdate.list <- list()
 start.date.list[[1]] <- "X6.23.16" # no cameras up before this date
 start.date.asdate.list[[1]] <- as.Date("6/23/16", format = "%m/%d/%y")
-end.date.list[[1]] <- "X8.31.16"
-end.date.asdate.list[[1]] <- as.Date("8/31/16", format = "%m/%d/%y")
+end.date.list[[1]] <- "X7.31.16"
+end.date.asdate.list[[1]] <- as.Date("7/31/16", format = "%m/%d/%y")
 start.date.list[[2]] <- "X6.1.17"
 start.date.asdate.list[[2]] <- as.Date("6/1/17", format = "%m/%d/%y")
-end.date.list[[2]] <- "X8.31.17"
-end.date.asdate.list[[2]] <- as.Date("8/31/17", format = "%m/%d/%y")
+end.date.list[[2]] <- "X7.31.17"
+end.date.asdate.list[[2]] <- as.Date("7/31/17", format = "%m/%d/%y")
 start.date.list[[3]] <- "X6.1.18"
 start.date.asdate.list[[3]] <- as.Date("6/1/18", format = "%m/%d/%y")
-end.date.list[[3]] <- "X8.31.18"
-end.date.asdate.list[[3]] <- as.Date("8/31/18", format = "%m/%d/%y")
+end.date.list[[3]] <- "X7.31.18"
+end.date.asdate.list[[3]] <- as.Date("7/31/18", format = "%m/%d/%y")
 
 # and make list of years for naming
 year.list <- list()
@@ -114,6 +114,13 @@ for (i in 1:length(start.date.list)) {
                                      records$Oribi[l], records$Warthog[l], records$Waterbuck[l]), na.rm=TRUE)
   }
 
+  # add together floodplain species
+  records$FloodSpecies <- NA
+  for (l in 1:nrow(records)) {
+    records$FloodSpecies[l] <- sum(c(records$Reedbuck[l], records$Impala[l],
+                                     records$Oribi[l], records$Warthog[l], records$Waterbuck[l]), na.rm=TRUE)
+  }
+  
   # join camera operation dates and species observations
   RAI.table <- join(camop, records)
   
@@ -125,8 +132,6 @@ for (i in 1:length(start.date.list)) {
   
   # calculate RAI
   RAI.table$RAI <- RAI.table$Count / RAI.table$Operation  
-  
-
   
   # add column for year
   RAI.table$Year <- year.list[[i]]
@@ -167,7 +172,6 @@ RAI.table.master.wide <- RAI.table.master.wide %>% dplyr::select(StudySite, Comm
 
 
 # export csv
-write.csv(RAI.table.master.wide, "Matt_LOD/RAI_LOD_by_year_wide_091919.csv", row.names=F)
 write.csv(RAI.table.master.wide, here::here('data', 'RAI_LOD_by_year_wide.csv'), row.names=F)
 
 
